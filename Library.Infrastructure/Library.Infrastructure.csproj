@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Library.Core\Library.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Extensions\" />
+  </ItemGroup>
+
 </Project>

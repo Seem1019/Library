@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 #nullable disable
 
 namespace Library.Core.Entities
 
 {
-    public partial class Book
+    public partial class Book 
     {
         public Book()
         {
