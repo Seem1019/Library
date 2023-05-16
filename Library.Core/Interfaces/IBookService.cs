@@ -15,7 +15,7 @@ namespace Library.Core.Interfaces
         /// <summary>
         /// Fetches a list of books applying given filters.
         /// </summary>
-        PagedList<Book> GetBooks(BookQueryFilter filters);
+        Task <PagedList<Book>> GetBooks(BookQueryFilter filters);
 
         /// <summary>
         /// Adds a new book to the repository.

@@ -5,7 +5,6 @@ using Library.Core.Exceptions;
 using Library.Core.Interfaces;
 using Library.Core.QueryFilters;
 using Microsoft.Extensions.Options;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -27,12 +26,12 @@ namespace Library.Core.Services
             return await _unitOfWork.Books.GetByIdAsync(id);
         }
 
-        public PagedList<Book> GetBooks(BookQueryFilter filters)
+        public async Task <PagedList<Book>> GetBooks(BookQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
             filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
 
-            var books = _unitOfWork.Books.GetAllAsync().Result;
+            var books = await _unitOfWork.Books.GetAllAsync();
 
             if (!string.IsNullOrEmpty(filters.Title))
             {
