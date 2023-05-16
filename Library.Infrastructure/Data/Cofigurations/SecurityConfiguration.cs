@@ -30,7 +30,7 @@ namespace Library.Infrastructure.Data.Cofigurations
             builder.Property(s => s.Password)
                 .HasColumnName("contraseña")
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(255);
 
             // Configure the Role Conversion
             builder.Property(s => s.Role)

@@ -6,6 +6,7 @@ using Library.Core.Interfaces;
 using Library.Core.QueryFilters;
 using Microsoft.Extensions.Options;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Library.Core.Services
@@ -26,13 +27,14 @@ namespace Library.Core.Services
             return await _unitOfWork.Books.GetByIdAsync(id);
         }
 
+
         public async Task <PagedList<Book>> GetBooks(BookQueryFilter filters)
         {
             filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
             filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
 
-            var books = await _unitOfWork.Books.GetAllAsync();
-
+            var books = await _unitOfWork.Books.GetAllWithAuthorsAsync();
+            
             if (!string.IsNullOrEmpty(filters.Title))
             {
                 books = books.Where(x => x.Title.ToLower().Contains(filters.Title.ToLower()));
@@ -117,12 +119,19 @@ namespace Library.Core.Services
 
         public async Task<bool> DeleteBook(int id)
         {
+
             var book = await _unitOfWork.Books.GetByIdAsync(id);
+            if (book == null)
+            {
+                return false;
+            }
             _unitOfWork.Books.Delete(book);
             await _unitOfWork.CommitAsync();
             return true;
         }
 
-  
+       
+
+
     }
 }

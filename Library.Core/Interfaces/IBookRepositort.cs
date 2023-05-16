@@ -1,4 +1,6 @@
 ﻿using Library.Core.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Library.Core.Interfaces
 {
@@ -7,6 +9,6 @@ namespace Library.Core.Interfaces
     /// </summary>
     public interface IBookRepository : IRepository<Book>
     {
-        
+        public Task<IEnumerable<Book>> GetAllWithAuthorsAsync();
     }
 }

@@ -26,7 +26,7 @@ namespace Library.Infrastructure.Data.Cofigurations
                 .HasColumnName("sinopsis");
 
             builder.Property(e => e.Title)
-                .HasMaxLength(50)
+                
                 .HasColumnName("title");
 
             builder.HasOne(d => d.Publisher)
