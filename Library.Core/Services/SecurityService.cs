@@ -1,4 +1,5 @@
 ﻿using Library.Core.Entities;
+using Library.Core.Exceptions;
 using Library.Core.Interfaces;
 using System.Threading.Tasks;
 
@@ -15,7 +16,12 @@ namespace Library.Core.Services
 
         public async Task<Security> GetLoginByCredentials(UserLogin userLogin)
         {
-            return await _unitOfWork.SecurityRepository.GetLoginByCredentials(userLogin);
+            var user = await _unitOfWork.SecurityRepository.GetLoginByCredentials(userLogin);
+            if (user == null)
+            {
+                throw new BusinessException("User or password invalid.");
+            }
+            return user;
         }
 
         public async Task<int> RegisterUser(Security security)
