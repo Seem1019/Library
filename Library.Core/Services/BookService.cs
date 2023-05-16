@@ -1,6 +1,7 @@
 ﻿using Contacts.Core.CustomEntities;
 using Library.Core.CustomEntities;
 using Library.Core.Entities;
+using Library.Core.Exceptions;
 using Library.Core.Interfaces;
 using Library.Core.QueryFilters;
 using Microsoft.Extensions.Options;
@@ -82,7 +83,7 @@ namespace Library.Core.Services
             var publisher = await _unitOfWork.Publishers.GetByIdAsync(book.PublisherId);
             if (publisher == null)
             {
-                throw new ApplicationException("Publisher doesn't exist");
+                throw new BusinessException("Publisher doesn't exist");
             }
 
             await _unitOfWork.Books.AddAsync(book);
@@ -101,7 +102,7 @@ namespace Library.Core.Services
             // Check that the PublisherId matches the Publisher's Id
             if (book.Publisher != null && book.PublisherId != book.Publisher.Id)
             {
-                throw new ArgumentException("The PublisherId of the book does not match the Id of the Publisher entity");
+                throw new BusinessException("The PublisherId of the book does not match the Id of the Publisher entity");
             }
 
             existingBook.PublisherId = book.PublisherId;

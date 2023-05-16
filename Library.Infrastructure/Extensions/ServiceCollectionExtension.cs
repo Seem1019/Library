@@ -18,7 +18,7 @@ namespace Library.Infrastructure.Extensions
         public static IServiceCollection AddDbContexts(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<TravelLibraryContext>(options =>
-               options.UseSqlServer(configuration.GetConnectionString("SocialMedia"))
+               options.UseSqlServer(configuration.GetConnectionString("TravelLibrary"))
            );
 
             return services;
