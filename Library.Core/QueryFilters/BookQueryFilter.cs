@@ -43,6 +43,10 @@
         /// Maximum page count to filter by.
         /// </summary>
         public int? MaxNumberOfPages { get; set; }
+
+        public int PageSize { get; set; }
+
+        public int PageNumber { get; set; }
     }
 
 }

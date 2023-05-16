@@ -16,6 +16,7 @@ namespace Library.Infrastructure.Data
         public virtual DbSet<AuthorHasBook> AuthorsHasBooks { get; set; }
         public virtual DbSet<Publisher> Publishers { get; set; }
         public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<Security>Securities { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

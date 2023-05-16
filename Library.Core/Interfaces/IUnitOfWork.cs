@@ -35,5 +35,7 @@ namespace Library.Core.Interfaces
         /// </summary>
         /// <returns>The number of changes written to the database.</returns>
         Task<int> CommitAsync();
+        ISecurityRepository SecurityRepository { get; }
+
     }
 }

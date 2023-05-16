@@ -1,4 +1,6 @@
-﻿namespace Library.Core.DTOs
+﻿using System.Collections.Generic;
+
+namespace Library.Core.DTOs
 {
     public class BookDto
     {
@@ -7,5 +9,7 @@
         public string Title { get; set; }
         public string Synopsis { get; set; }
         public string NumberOfPages { get; set; }
+        public List<AuthorDto> Authors { get; set; }
+
     }
 }

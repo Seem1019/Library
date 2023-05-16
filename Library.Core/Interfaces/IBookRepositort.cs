@@ -1,12 +1,12 @@
-﻿using Library.Core.DTOs;
+﻿using Library.Core.Entities;
 
 namespace Library.Core.Interfaces
 {
     /// <summary>
     /// Provides read and write operations for Book entity.
     /// </summary>
-    public interface IBookRepository : IRepository<BookDto>
+    public interface IBookRepository : IRepository<Book>
     {
-        // Add any additional methods specific to the Book entity here.
+        
     }
 }
