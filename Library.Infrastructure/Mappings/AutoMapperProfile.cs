@@ -11,8 +11,7 @@ namespace Library.Infrastructure.Mappings
     {
         public AutoMapperProfile()
         {
-            CreateMap<Author, AuthorDto>();
-            CreateMap<AuthorDto, Author>();
+            CreateMap<Author, AuthorDto>().ReverseMap();
 
             CreateMap<AuthorHasBook, AuthorHasBookDto>()
                 .ForMember(dest => dest.Author, opt => opt.MapFrom(src => src.Author))

@@ -1,4 +1,5 @@
 ﻿using Contacts.Core.CustomEntities;
+using Library.Core.CustomEntities;
 using Library.Core.Entities;
 using Library.Core.QueryFilters;
 using System.Threading.Tasks;
@@ -15,12 +16,12 @@ namespace Library.Core.Interfaces
         /// <summary>
         /// Fetches a list of books applying given filters.
         /// </summary>
-        Task <PagedList<Book>> GetBooks(BookQueryFilter filters);
+        Task <ResponseModel<Book>> GetBooks(BookQueryFilter filters = null);
 
         /// <summary>
         /// Adds a new book to the repository.
         /// </summary>
-        Task InsertBook(Book book);
+        Task<ResponseModel<Book>> InsertBook(Book book);
 
         /// <summary>
         /// Updates an existing book's details.

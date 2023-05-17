@@ -73,11 +73,11 @@ namespace Library.Api.Controllers
         public async Task<IActionResult> CreateBook(BookDto bookDto)
         {
             var book = _mapper.Map<Book>(bookDto);
-            await _bookService.InsertBook(book);
+            var result = await _bookService.InsertBook(book);
 
             bookDto = _mapper.Map<BookDto>(book);
 
-            return CreatedAtRoute(nameof(GetBook), new { isbn = bookDto.Isbn }, new ApiResponse<BookDto>(bookDto));
+            return result.IsError ? BadRequest(result) : CreatedAtRoute(nameof(GetBook), new { isbn = bookDto.Isbn }, new ApiResponse<BookDto>(bookDto));
         }
 
         // PUT: api/Books/{isbn}

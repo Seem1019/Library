@@ -3,6 +3,7 @@ using Library.Core.Interfaces;
 using Library.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Library.Infrastructure.Repositories
@@ -13,12 +14,11 @@ namespace Library.Infrastructure.Repositories
         {
         }
 
-        public async Task<IEnumerable<Book>> GetAllWithAuthorsAsync()
+        public IQueryable<Book> GetAllWithAuthors()
         {
-            return await _entities
+            return _entities
                 .Include(b => b.AuthorHasBooks)
-                    .ThenInclude(ahb => ahb.Author)
-                .ToListAsync();
+                    .ThenInclude(ahb => ahb.Author);
         }
 
 

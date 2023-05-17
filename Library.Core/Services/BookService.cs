@@ -28,67 +28,36 @@ namespace Library.Core.Services
         }
 
 
-        public async Task <PagedList<Book>> GetBooks(BookQueryFilter filters)
+        public async Task<ResponseModel<Book>> GetBooks(BookQueryFilter filters = null)
         {
-            filters.PageNumber = filters.PageNumber == 0 ? _paginationOptions.DefaultPageNumber : filters.PageNumber;
-            filters.PageSize = filters.PageSize == 0 ? _paginationOptions.DefaultPageSize : filters.PageSize;
+            var response = new ResponseModel<Book>();
+            var books = _unitOfWork.Books.GetAllWithAuthors();
 
-            var books = await _unitOfWork.Books.GetAllWithAuthorsAsync();
-            
-            if (!string.IsNullOrEmpty(filters.Title))
+            if (filters != null)
             {
-                books = books.Where(x => x.Title.ToLower().Contains(filters.Title.ToLower()));
+                books = filters.ApplyFilter(books);
+                books = response.ApplyPagination(books);
             }
 
-            if (filters.Isbn.HasValue)
-            {
-                books = books.Where(x => x.Isbn == filters.Isbn);
-            }
-
-            if (filters.PublisherId.HasValue)
-            {
-                books = books.Where(x => x.PublisherId == filters.PublisherId);
-            }
-
-            if (filters.AuthorId.HasValue)
-            {
-                books = books.Where(x => x.AuthorHasBooks.Any(ahb => ahb.AuthorId == filters.AuthorId));
-            }
-
-            if (!string.IsNullOrEmpty(filters.PublisherName))
-            {
-                books = books.Where(x => x.Publisher.Name.ToLower().Contains(filters.PublisherName.ToLower()));
-            }
-
-            if (!string.IsNullOrEmpty(filters.AuthorName))
-            {
-                books = books.Where(x => x.AuthorHasBooks.Any(ahb => ahb.Author.Name.ToLower().Contains(filters.AuthorName.ToLower())));
-            }
-
-            if (filters.MinNumberOfPages.HasValue)
-            {
-                books = books.Where(x => int.Parse(x.NumberOfPages) >= filters.MinNumberOfPages);
-            }
-
-            if (filters.MaxNumberOfPages.HasValue)
-            {
-                books = books.Where(x => int.Parse(x.NumberOfPages) <= filters.MaxNumberOfPages);
-            }
-
-            var pagedBooks = PagedList<Book>.Create(books, filters.PageNumber, filters.PageSize);
-            return pagedBooks;
+            response.Data = books.ToList();
+            return response;
         }
 
-        public async Task InsertBook(Book book)
+        public async Task<ResponseModel<Book>> InsertBook(Book book)
         {
+            var response = new ResponseModel<Book>();
+
             var publisher = await _unitOfWork.Publishers.GetByIdAsync(book.PublisherId);
             if (publisher == null)
             {
-                throw new BusinessException("Publisher doesn't exist");
+                response.IsError = true;
+                response.Message = "Publisher doesn't exist";
             }
 
             await _unitOfWork.Books.AddAsync(book);
             await _unitOfWork.CommitAsync();
+
+            return response;
         }
 
         public async Task<bool> UpdateBook(Book book)
@@ -106,12 +75,9 @@ namespace Library.Core.Services
                 throw new BusinessException("The PublisherId of the book does not match the Id of the Publisher entity");
             }
 
-            existingBook.PublisherId = book.PublisherId;
-            existingBook.NumberOfPages = book.NumberOfPages;
-            existingBook.Synopsis = book.Synopsis;
-            existingBook.Title = book.Title;
+       
 
-            _unitOfWork.Books.Update(existingBook);
+            _unitOfWork.Books.Update(book);
             await _unitOfWork.CommitAsync();
 
             return true;
